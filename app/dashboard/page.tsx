@@ -10,42 +10,45 @@ export default function DashboardPage() {
 
   const [loading, setLoading] = useState(false);
 
-  const [videos, setVideos] = useState([
-    {
-      title: "Cyberpunk City",
-      image:
-        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      title: "AI Robot",
-      image:
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-    },
-  ]);
+  const [image, setImage] = useState("");
 
-  const createVideo = async () => {
+  const generateImage = async () => {
 
     if (!prompt) return;
 
     setLoading(true);
 
-    setTimeout(() => {
+    try {
 
-      const newVideo = {
-        title: prompt,
-        image:
-          "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=1200&auto=format&fit=crop",
-      };
+      const response = await fetch("/api/generate-image", {
+        method: "POST",
 
-      setVideos([newVideo, ...videos]);
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-      setLoading(false);
+        body: JSON.stringify({
+          prompt,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      setImage(data.image);
 
       setOpen(false);
 
-      setPrompt("");
+    } catch (error) {
 
-    }, 3000);
+      console.log(error);
+
+    } finally {
+
+      setLoading(false);
+
+    }
 
   };
 
@@ -67,15 +70,15 @@ export default function DashboardPage() {
           </button>
 
           <button className="w-full bg-white/10 py-4 rounded-2xl">
-            Videolarım
+            AI Images
           </button>
 
           <button className="w-full bg-white/10 py-4 rounded-2xl">
-            AI Oluştur
+            Videos
           </button>
 
           <button className="w-full bg-white/10 py-4 rounded-2xl">
-            Ayarlar
+            Settings
           </button>
 
         </div>
@@ -90,11 +93,11 @@ export default function DashboardPage() {
           <div>
 
             <h2 className="text-6xl font-extrabold">
-              Dashboard 🎬
+              AI Dashboard 🎨
             </h2>
 
             <p className="text-white/60 mt-3 text-xl">
-              AI ile oluşturulan videolar
+              OpenAI ile gerçek görseller üret
             </p>
 
           </div>
@@ -103,44 +106,46 @@ export default function DashboardPage() {
             onClick={() => setOpen(true)}
             className="bg-white text-black px-6 py-4 rounded-2xl font-bold hover:scale-105 transition"
           >
-            + Yeni Video
+            + Yeni Görsel
           </button>
 
         </div>
 
-        {/* VIDEO GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* IMAGE RESULT */}
+        {image && (
 
-          {videos.map((video, index) => (
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-8 mb-10">
 
-            <div
-              key={index}
-              className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden hover:scale-105 transition"
-            >
+            <h3 className="text-3xl font-bold mb-6">
+              Oluşturulan Görsel 🖼️
+            </h3>
 
-              <img
-                src={video.image}
-                alt={video.title}
-                className="h-60 w-full object-cover"
-              />
+            <img
+              src={image}
+              alt="AI"
+              className="w-full rounded-3xl"
+            />
 
-              <div className="p-5">
+          </div>
 
-                <h3 className="text-2xl font-bold">
-                  {video.title}
-                </h3>
+        )}
 
-                <p className="text-white/60 mt-2">
-                  AI tarafından oluşturuldu
-                </p>
+        {/* EMPTY STATE */}
+        {!image && (
 
-              </div>
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-20 text-center">
 
-            </div>
+            <h3 className="text-4xl font-bold mb-4">
+              Henüz Görsel Yok 🚀
+            </h3>
 
-          ))}
+            <p className="text-white/60 text-xl">
+              İlk AI görselini oluşturmak için yukarıdaki butona bas.
+            </p>
 
-        </div>
+          </div>
+
+        )}
 
       </section>
 
@@ -154,7 +159,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-6">
 
               <h2 className="text-4xl font-extrabold">
-                Yeni Video Oluştur 🎬
+                Yeni Görsel Oluştur 🎨
               </h2>
 
               <button
@@ -167,20 +172,20 @@ export default function DashboardPage() {
             </div>
 
             <textarea
-              placeholder="Bir video sahnesi yaz..."
+              placeholder="Örnek: cinematic cyberpunk city at night"
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               className="w-full h-40 bg-black/40 border border-white/10 rounded-3xl p-6 text-xl outline-none"
             />
 
             <button
-              onClick={createVideo}
+              onClick={generateImage}
               className="w-full mt-6 bg-white text-black py-5 rounded-3xl text-2xl font-bold"
             >
 
               {loading
-                ? "AI Video Oluşturuyor... 🚀"
-                : "🚀 AI Video Oluştur"}
+                ? "AI Görsel Oluşturuyor... 🚀"
+                : "🚀 Görsel Oluştur"}
 
             </button>
 

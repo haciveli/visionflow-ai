@@ -1,231 +1,275 @@
-"use client";
-
-import { useState } from "react";
-
-export default function Home() {
-
-  const [prompt, setPrompt] = useState("");
-  const [image, setImage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const generateImage = async () => {
-
-    try {
-
-      setLoading(true);
-
-      const res = await fetch("/api/generate-video", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (data.image) {
-        setImage(String(data.image));
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-    } finally {
-
-      setLoading(false);
-
-    }
-  };
+export default function HomePage() {
 
   return (
 
     <main className="min-h-screen bg-black text-white overflow-hidden">
 
-      {/* BACKGROUND */}
-      <div className="fixed inset-0 bg-gradient-to-br from-zinc-950 via-black to-zinc-900" />
+      {/* NAVBAR */}
+      <nav className="flex items-center justify-between px-10 py-6 border-b border-white/10">
 
-      <div className="fixed top-[-200px] left-[-200px] w-[500px] h-[500px] bg-purple-500/20 blur-[140px] rounded-full" />
+        <h1 className="text-4xl font-extrabold">
+          VisionFlow AI 🚀
+        </h1>
 
-      <div className="fixed bottom-[-200px] right-[-200px] w-[500px] h-[500px] bg-cyan-500/20 blur-[140px] rounded-full" />
+        <div className="flex items-center gap-4">
 
-      {/* CONTENT */}
-      <div className="relative z-10">
-
-        {/* NAVBAR */}
-        <header className="flex items-center justify-between px-10 py-8 border-b border-white/10 backdrop-blur-xl">
-
-          <h1 className="text-3xl font-extrabold tracking-tight">
-            VisionFlow AI
-          </h1>
-
-          <button className="bg-white text-black px-6 py-3 rounded-2xl font-bold hover:scale-105 transition">
-            Dashboard
+          <button className="px-6 py-3 rounded-2xl bg-white/10">
+            Login
           </button>
 
-        </header>
+          <button className="px-6 py-3 rounded-2xl bg-white text-black font-bold">
+            Get Started
+          </button>
 
-        {/* HERO */}
-        <section className="max-w-6xl mx-auto px-6 py-24 text-center">
+        </div>
 
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 px-5 py-2 rounded-full backdrop-blur-xl mb-8">
+      </nav>
 
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+      {/* HERO */}
+      <section className="max-w-7xl mx-auto px-10 py-24 grid lg:grid-cols-2 gap-16 items-center">
 
-            <span className="text-sm text-zinc-300">
-              AI Video Generation Active
+        <div>
+
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-5 py-2 mb-8">
+
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+
+            <span className="text-sm">
+              AI Video Generation Platform
             </span>
 
           </div>
 
-          <h2 className="text-7xl md:text-8xl font-extrabold leading-tight tracking-tight">
+          <h1 className="text-7xl font-extrabold leading-tight mb-8">
 
-            Yapay Zekâ ile
-            <br />
-
-            <span className="bg-gradient-to-r from-white to-zinc-500 bg-clip-text text-transparent">
-              Video Üret
+            Create
+            <span className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+              {" "}AI Videos{" "}
             </span>
+            In Seconds 🎬
 
-          </h2>
+          </h1>
 
-          <p className="mt-8 text-zinc-400 text-xl max-w-3xl mx-auto leading-relaxed">
+          <p className="text-2xl text-white/60 mb-10 leading-relaxed">
 
-            Yazıyı sinematik videolara dönüştür.
-            AI ile TikTok, Reels ve YouTube Shorts içerikleri üret.
+            Generate cinematic AI videos, viral reels and futuristic content
+            with next generation artificial intelligence.
 
           </p>
 
-          {/* PROMPT BOX */}
-          <div className="mt-16 bg-white/5 border border-white/10 backdrop-blur-2xl rounded-[40px] p-8 max-w-4xl mx-auto shadow-2xl">
+          <div className="flex flex-wrap gap-4">
 
-            <textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Örn: Yağmurlu cyberpunk şehirde yürüyen gizemli adam..."
-              className="w-full h-44 bg-black/40 border border-white/10 rounded-3xl p-6 text-xl resize-none focus:outline-none"
-            />
+            <button className="bg-white text-black px-8 py-5 rounded-3xl text-xl font-bold hover:scale-105 transition">
 
-            <div className="grid md:grid-cols-2 gap-4 mt-6">
+              🚀 Start Creating
 
-              <select className="bg-black/40 border border-white/10 rounded-2xl p-4 text-lg">
+            </button>
 
-                <option>9:16 TikTok</option>
-                <option>16:9 YouTube</option>
-                <option>1:1 Instagram</option>
+            <button className="bg-white/10 border border-white/10 px-8 py-5 rounded-3xl text-xl hover:bg-white/20 transition">
 
-              </select>
-
-              <select className="bg-black/40 border border-white/10 rounded-2xl p-4 text-lg">
-
-                <option>Sinematik</option>
-                <option>Anime</option>
-                <option>Cyberpunk</option>
-                <option>Gerçekçi</option>
-
-              </select>
-
-            </div>
-
-            <button
-              onClick={generateImage}
-              className="w-full mt-6 bg-white text-black py-5 rounded-3xl text-2xl font-bold hover:scale-[1.02] transition"
-            >
-
-              {loading ? (
-
-                <div className="flex items-center justify-center gap-3">
-
-                  <div className="w-5 h-5 border-4 border-black border-t-transparent rounded-full animate-spin" />
-
-                  <span>AI Video Oluşturuyor...</span>
-
-                </div>
-
-              ) : (
-
-                "🎬 AI Video Oluştur"
-
-              )}
+              ▶ Watch Demo
 
             </button>
 
           </div>
 
-          {/* RESULT */}
-          {image && (
+        </div>
 
-            <div className="mt-16 max-w-5xl mx-auto">
+        {/* HERO CARD */}
+        <div className="relative">
 
-              <div className="bg-white/5 border border-white/10 rounded-[40px] p-6 backdrop-blur-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 blur-[120px] opacity-30" />
 
-                <img
-                  src={image}
-                  alt="AI"
-                  className="rounded-3xl w-full border border-white/10"
-                />
+          <div className="relative bg-white/5 border border-white/10 rounded-[40px] p-8 backdrop-blur-2xl">
 
-                <video
-                  className="mt-6 rounded-3xl w-full border border-white/10"
-                  autoPlay
-                  muted
-                  loop
-                  controls
-                >
-                  <source
-                    src="https://videos.pexels.com/video-files/3195650/3195650-uhd_2560_1440_25fps.mp4"
-                    type="video/mp4"
-                  />
-                </video>
+            <img
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1400&auto=format&fit=crop"
+              className="rounded-3xl mb-6"
+            />
 
-                {/* VIDEO CARDS */}
-                <div className="grid md:grid-cols-3 gap-6 mt-10">
+            <div className="flex items-center justify-between">
 
-                  {[1,2,3].map((item) => (
+              <div>
 
-                    <div
-                      key={item}
-                      className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-xl hover:scale-105 transition"
-                    >
+                <h3 className="text-3xl font-bold">
+                  Cyberpunk AI Scene
+                </h3>
 
-                      <img
-                        src={image}
-                        alt="preview"
-                        className="h-52 w-full object-cover"
-                      />
-
-                      <div className="p-4">
-
-                        <h3 className="text-xl font-bold">
-                          AI Sahne #{item}
-                        </h3>
-
-                        <p className="text-zinc-400 mt-2 text-sm">
-                          Yapay zekâ tarafından oluşturulan sinematik sahne.
-                        </p>
-
-                      </div>
-
-                    </div>
-
-                  ))}
-
-                </div>
+                <p className="text-white/60 mt-2">
+                  Generated in 12 seconds
+                </p>
 
               </div>
 
+              <button className="bg-white text-black px-6 py-3 rounded-2xl font-bold">
+                Play
+              </button>
+
             </div>
 
-          )}
+          </div>
 
-        </section>
+        </div>
 
-      </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="max-w-7xl mx-auto px-10 pb-24">
+
+        <div className="grid md:grid-cols-3 gap-8">
+
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-8">
+
+            <div className="text-6xl mb-6">
+              🎬
+            </div>
+
+            <h3 className="text-3xl font-bold mb-4">
+              AI Video Creation
+            </h3>
+
+            <p className="text-white/60 text-lg leading-relaxed">
+              Create cinematic videos with advanced artificial intelligence.
+            </p>
+
+          </div>
+
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-8">
+
+            <div className="text-6xl mb-6">
+              ⚡
+            </div>
+
+            <h3 className="text-3xl font-bold mb-4">
+              Lightning Fast
+            </h3>
+
+            <p className="text-white/60 text-lg leading-relaxed">
+              Generate viral AI content in seconds with optimized rendering.
+            </p>
+
+          </div>
+
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-8">
+
+            <div className="text-6xl mb-6">
+              🌍
+            </div>
+
+            <h3 className="text-3xl font-bold mb-4">
+              Global Platform
+            </h3>
+
+            <p className="text-white/60 text-lg leading-relaxed">
+              Create content for YouTube, TikTok, Instagram and more.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* PRICING */}
+      <section className="max-w-7xl mx-auto px-10 pb-32">
+
+        <div className="text-center mb-16">
+
+          <h2 className="text-6xl font-extrabold mb-6">
+            Pricing 💎
+          </h2>
+
+          <p className="text-white/60 text-2xl">
+            Choose your AI creation plan
+          </p>
+
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-10">
+
+            <h3 className="text-3xl font-bold mb-4">
+              Starter
+            </h3>
+
+            <p className="text-6xl font-extrabold mb-8">
+              $9
+            </p>
+
+            <ul className="space-y-4 text-white/70 text-lg">
+
+              <li>✔ 20 AI Videos</li>
+              <li>✔ HD Export</li>
+              <li>✔ Fast Rendering</li>
+
+            </ul>
+
+            <button className="w-full mt-10 bg-white text-black py-4 rounded-2xl font-bold">
+              Start Now
+            </button>
+
+          </div>
+
+          <div className="bg-gradient-to-b from-blue-500 to-purple-600 rounded-[40px] p-10 scale-105 shadow-2xl shadow-purple-500/30">
+
+            <div className="inline-block bg-white text-black px-4 py-2 rounded-full font-bold mb-6">
+              MOST POPULAR
+            </div>
+
+            <h3 className="text-3xl font-bold mb-4">
+              Pro
+            </h3>
+
+            <p className="text-6xl font-extrabold mb-8">
+              $29
+            </p>
+
+            <ul className="space-y-4 text-white text-lg">
+
+              <li>✔ Unlimited Videos</li>
+              <li>✔ 4K Export</li>
+              <li>✔ AI Voice</li>
+              <li>✔ Premium Templates</li>
+
+            </ul>
+
+            <button className="w-full mt-10 bg-white text-black py-4 rounded-2xl font-bold">
+              Upgrade
+            </button>
+
+          </div>
+
+          <div className="bg-white/5 border border-white/10 rounded-[40px] p-10">
+
+            <h3 className="text-3xl font-bold mb-4">
+              Enterprise
+            </h3>
+
+            <p className="text-6xl font-extrabold mb-8">
+              $99
+            </p>
+
+            <ul className="space-y-4 text-white/70 text-lg">
+
+              <li>✔ API Access</li>
+              <li>✔ Team Accounts</li>
+              <li>✔ Unlimited Rendering</li>
+
+            </ul>
+
+            <button className="w-full mt-10 bg-white text-black py-4 rounded-2xl font-bold">
+              Contact Us
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
 
     </main>
 
   );
+
 }

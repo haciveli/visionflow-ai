@@ -32,8 +32,7 @@ export default function DashboardPage() {
 
     setUser(currentUser);
 
-    const savedHistory =
-      localStorage.getItem("history");
+    const savedHistory = localStorage.getItem("history");
 
     if (savedHistory) {
 
@@ -85,10 +84,6 @@ export default function DashboardPage() {
           "history",
           JSON.stringify(updatedHistory)
         );
-
-      } else {
-
-        alert("Görsel oluşturulamadı");
 
       }
 
@@ -151,10 +146,6 @@ export default function DashboardPage() {
           JSON.stringify(updatedHistory)
         );
 
-      } else {
-
-        alert("Video oluşturulamadı");
-
       }
 
     } catch (error) {
@@ -175,37 +166,30 @@ export default function DashboardPage() {
 
   return (
 
-    <main className="min-h-screen bg-black text-white flex">
+    <main className="min-h-screen w-full overflow-x-hidden bg-black text-white">
 
-      <aside className="w-72 border-r border-white/10 p-6">
+      {/* HEADER */}
+      <header className="w-full border-b border-white/10 p-4 lg:p-6">
 
-        <h1 className="text-5xl font-bold mb-10">
-          VisionFlow 🚀
-        </h1>
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
-      </aside>
+          <div className="w-full overflow-hidden">
 
-      <section className="flex-1 p-10">
-
-        <div className="flex justify-between items-center mb-10">
-
-          <div>
-
-            <h1 className="text-7xl font-bold">
-              AI Dashboard 🎨
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold break-words">
+              VisionFlow 🚀
             </h1>
 
-            <p className="text-white/50 text-xl mt-2">
-              Hoşgeldin, {user} 👋
+            <p className="text-white/50 mt-3 text-sm lg:text-lg break-all">
+              Hoşgeldin, {user}
             </p>
 
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
 
             <button
               onClick={() => setOpen(true)}
-              className="bg-white text-black px-8 py-5 rounded-3xl font-bold"
+              className="w-full sm:w-auto bg-white text-black px-6 py-4 rounded-2xl font-bold"
             >
               + Yeni İçerik
             </button>
@@ -218,7 +202,7 @@ export default function DashboardPage() {
                 window.location.href = "/login";
 
               }}
-              className="bg-red-600 px-6 py-5 rounded-3xl font-bold"
+              className="w-full sm:w-auto bg-red-600 px-6 py-4 rounded-2xl font-bold"
             >
               Çıkış Yap
             </button>
@@ -227,28 +211,64 @@ export default function DashboardPage() {
 
         </div>
 
-        {loading && (
+      </header>
 
-          <div className="text-5xl font-bold">
-            AI içerik oluşturuyor... 🚀
+      {/* CONTENT */}
+      <section className="w-full max-w-full overflow-x-hidden p-4 lg:p-10">
+
+        <h2 className="text-3xl lg:text-6xl font-bold mb-8 break-words">
+          AI Dashboard 🎨
+        </h2>
+
+        {/* EMPTY */}
+        {!image && !video && !loading && (
+
+          <div className="bg-white/5 border border-white/10 rounded-[30px] min-h-[250px] lg:min-h-[400px] flex items-center justify-center text-center px-4">
+
+            <div>
+
+              <h3 className="text-2xl lg:text-5xl font-bold mb-4 break-words">
+                Henüz İçerik Yok 🚀
+              </h3>
+
+              <p className="text-white/50 text-base lg:text-2xl">
+                İlk AI görselini veya videonu oluştur
+              </p>
+
+            </div>
+
           </div>
 
         )}
 
+        {/* LOADING */}
+        {loading && (
+
+          <div className="bg-white/5 border border-white/10 rounded-[30px] min-h-[250px] lg:min-h-[400px] flex items-center justify-center text-center px-4">
+
+            <div className="text-2xl lg:text-5xl font-bold animate-pulse break-words">
+              AI içerik oluşturuyor... 🚀
+            </div>
+
+          </div>
+
+        )}
+
+        {/* IMAGE */}
         {image && !loading && (
 
           <div className="mb-10">
 
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
 
-              <h2 className="text-4xl font-bold">
+              <h2 className="text-2xl lg:text-4xl font-bold break-words">
                 AI Görsel 🖼️
               </h2>
 
               <a
                 href={image}
                 download="visionflow-image.jpg"
-                className="bg-green-600 px-6 py-4 rounded-2xl font-bold"
+                className="bg-green-600 px-6 py-4 rounded-2xl font-bold text-center"
               >
                 📥 İndir
               </a>
@@ -258,25 +278,26 @@ export default function DashboardPage() {
             <img
               src={image}
               alt="AI"
-              className="w-full rounded-[40px]"
+              className="w-full max-w-full rounded-[30px]"
             />
 
           </div>
 
         )}
 
+        {/* VIDEO */}
         {video && !loading && (
 
           <div className="mt-10">
 
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-2xl lg:text-4xl font-bold mb-6 break-words">
               AI Video 🎬
             </h2>
 
             <video
               controls
               autoPlay
-              className="w-full rounded-[40px]"
+              className="w-full max-w-full rounded-[30px]"
             >
 
               <source src={video} type="video/mp4" />
@@ -287,18 +308,70 @@ export default function DashboardPage() {
 
         )}
 
+        {/* HISTORY */}
+        {history.length > 0 && (
+
+          <div className="mt-20">
+
+            <h2 className="text-2xl lg:text-4xl font-bold mb-8 break-words">
+              Geçmiş 🚀
+            </h2>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              {history.map((item, index) => (
+
+                <div
+                  key={index}
+                  className="bg-white/5 p-4 rounded-3xl overflow-hidden"
+                >
+
+                  {item.type === "image" ? (
+
+                    <img
+                      src={item.url}
+                      className="w-full rounded-2xl"
+                    />
+
+                  ) : (
+
+                    <video
+                      controls
+                      className="w-full rounded-2xl"
+                    >
+
+                      <source
+                        src={item.url}
+                        type="video/mp4"
+                      />
+
+                    </video>
+
+                  )}
+
+                </div>
+
+              ))}
+
+            </div>
+
+          </div>
+
+        )}
+
       </section>
 
+      {/* MODAL */}
       {open && (
 
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
 
-          <div className="bg-zinc-900 p-8 rounded-[40px] w-full max-w-2xl border border-white/10">
+          <div className="bg-zinc-900 w-full max-w-2xl rounded-[30px] border border-white/10 p-5 lg:p-8">
 
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center justify-between mb-6 gap-4">
 
-              <h2 className="text-4xl font-bold">
-                Yeni İçerik Oluştur 🎨
+              <h2 className="text-2xl lg:text-4xl font-bold break-words">
+                Yeni İçerik 🎨
               </h2>
 
               <button
@@ -314,19 +387,19 @@ export default function DashboardPage() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Bir sahne hayal et..."
-              className="w-full h-40 bg-black/40 rounded-3xl p-6 outline-none text-xl"
+              className="w-full h-40 bg-black/40 rounded-3xl p-5 outline-none text-lg resize-none"
             />
 
             <button
               onClick={generateImage}
-              className="w-full mt-6 bg-white text-black py-5 rounded-3xl font-bold text-xl"
+              className="w-full mt-6 bg-white text-black py-5 rounded-3xl font-bold"
             >
               🖼️ Görsel Oluştur
             </button>
 
             <button
               onClick={generateVideo}
-              className="w-full mt-4 bg-purple-600 py-5 rounded-3xl font-bold text-xl"
+              className="w-full mt-4 bg-purple-600 py-5 rounded-3xl font-bold"
             >
               🎬 Video Oluştur
             </button>

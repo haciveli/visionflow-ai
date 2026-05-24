@@ -7,30 +7,38 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const signUp = async () => {
-    alert("Kayıt sistemi yakında 😄");
-  };
+  const login = () => {
 
-  const signIn = async () => {
+    if (!email || !password) {
+
+      alert("Bilgileri doldur");
+
+      return;
+
+    }
+
+    localStorage.setItem("user", email);
+
     window.location.href = "/dashboard";
+
   };
 
   return (
 
-    <main className="min-h-screen bg-black text-white flex items-center justify-center p-10">
+    <main className="min-h-screen bg-black flex items-center justify-center text-white">
 
-      <div className="w-full max-w-md bg-white/5 border border-white/10 rounded-[40px] p-10 backdrop-blur-2xl">
+      <div className="bg-zinc-900 p-10 rounded-3xl w-full max-w-md">
 
-        <h1 className="text-5xl font-extrabold mb-10 text-center">
-          VisionFlow 🔐
+        <h1 className="text-5xl font-bold text-center mb-10">
+          VisionFlow 🚀
         </h1>
 
         <input
           type="email"
-          placeholder="E-posta"
+          placeholder="E-Mail"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 mb-4"
+          className="w-full p-4 rounded-xl bg-black mb-4 border border-zinc-700"
         />
 
         <input
@@ -38,21 +46,14 @@ export default function LoginPage() {
           placeholder="Şifre"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full bg-black/40 border border-white/10 rounded-2xl p-4 mb-6"
+          className="w-full p-4 rounded-xl bg-black mb-6 border border-zinc-700"
         />
 
         <button
-          onClick={signIn}
-          className="w-full bg-white text-black py-4 rounded-2xl font-bold mb-4"
+          onClick={login}
+          className="w-full bg-white text-black py-4 rounded-xl font-bold"
         >
-          Giriş Yap
-        </button>
-
-        <button
-          onClick={signUp}
-          className="w-full bg-white/10 border border-white/10 py-4 rounded-2xl"
-        >
-          Kayıt Ol
+          Giriş Yap 🚀
         </button>
 
       </div>
@@ -60,4 +61,5 @@ export default function LoginPage() {
     </main>
 
   );
+
 }
